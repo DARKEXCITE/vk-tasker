@@ -10,7 +10,9 @@ const Desk = ({ id, children, name }) => {
     const { goToColumns, removeDesk } = useContext(Context)
 
     // Удаление доски
-    const deleteItem = () => {
+    const deleteItem = (e) => {
+        e.stopPropagation()
+
         deleteDesk(id)
             .then(() => removeDesk(id))
             .catch(console.error)

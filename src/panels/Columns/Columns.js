@@ -13,7 +13,8 @@ const Columns = () => {
 
     // Получаем все колонки из БД
     useEffect(() => {
-        getColumns(deskId).then(setColumns)
+        getColumns(deskId)
+            .then(setColumns)
     }, [])
 
     // Создание новой колонки
@@ -26,13 +27,12 @@ const Columns = () => {
     return (
         <Fragment>
             {/* Заголовок */}
-            <PanelHeaderSimple left={<PanelHeaderBack onClick={goToDesks} />}>{ deskName }</PanelHeaderSimple>
+            <PanelHeaderSimple left={<PanelHeaderBack onClick={goToDesks} />}>{deskName}</PanelHeaderSimple>
 
             {/* Компонент галереи колонок */}
             <Gallery slideWidth="100%" align="center" className="Columns__list">
-                {columns.map(({ id, name }) => {
-                    return <Column key={id} name={name} id={id} />
-                })}
+                {columns.map(({ id, name }) => <Column key={id} name={name} id={id} />)}
+
                 <Div className="Column">
                     <Card className="Column__wrapper">
                         <CreateForm onSubmit={createItem} placeholder="Введите название колонки" actionTitle="Создать колонку" />

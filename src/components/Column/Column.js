@@ -1,20 +1,33 @@
-import React, { useContext } from "react"
-import { Div, Button, Card, Header } from "@vkontakte/vkui"
+import React, { useContext, useEffect } from "react"
+import { Div, Button, Card, Header, CardGrid } from "@vkontakte/vkui"
 import PropTypes from 'prop-types'
 
-import Cards from "../Cards/Cards"
 import Context from "../App/context"
-import { deleteColumn } from "../../actions"
+import CreateForm from "../CreateForm/CreateForm"
+import ColumnCard from "../ColumnCard/ColumnCard"
+import { createCard, deleteColumn, getCards } from "../../actions"
 import './Column.css'
 
 const Column = ({ name, id }) => {
-    const { removeColumn } = useContext(Context)
+    const { removeColumn, addCard, cards, setCards } = useContext(Context)
+
+    // Получаем карточки текущей колонки из БД
+    useEffect(() => {
+        getCards(id)
+            .then(setCards)
+    }, [])
 
     // Удаление колонки
     const deleteItem = () => {
         deleteColumn(id)
             .then(() => removeColumn(id))
             .catch(console.error)
+    }
+
+    // Создание новой карточки
+    const createItem = (name) => {
+        return createCard(name, id)
+            .then((doc) => addCard({id: doc.id, ...doc.data()}))
     }
 
     return (
@@ -27,7 +40,11 @@ const Column = ({ name, id }) => {
                 </div>
 
                 {/* Вывод всех карточек */}
-                <Cards columnId={id} />
+                <CardGrid>
+                    {cards.map(({ id, name }) => <ColumnCard key={id} id={id}>{name}</ColumnCard>)}
+
+                    <CreateForm onSubmit={createItem} placeholder="Введите название карточки" actionTitle="Создать" />
+                </CardGrid>
             </Card>
         </Div>
     )

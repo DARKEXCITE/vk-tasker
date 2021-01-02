@@ -41,14 +41,26 @@ const useColumnsState = () => {
     return { addColumn, removeColumn, columns, setColumns }
 }
 
+const useCardsState = () => {
+    const [cards, setCards] = useState([])
+    // Добавление карточки в состояние
+    const addCard = (card) => setCards([...cards, card])
+    // Удаление карточки из состояния
+    const removeCard = (removeId) => setCards(cards.filter(({ id }) => removeId !== id))
+
+    return { cards, setCards, addCard, removeCard }
+}
+
 export const useAppState = () => {
     const navState = useNavState()
     const desksState = useDesksState()
     const columnsState = useColumnsState()
+    const cardsState = useCardsState()
 
     return {
         ...navState,
         ...desksState,
-        ...columnsState
+        ...columnsState,
+        ...cardsState
     }
 }
