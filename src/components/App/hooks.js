@@ -1,0 +1,54 @@
+import { useState } from "react"
+import { panel } from "./constants"
+
+const useDesksState = () => {
+    const [desks, setDesks] = useState([])
+
+    // Добавление доски в состояние
+    const addDesk = (desk) => setDesks([...desks, desk])
+    // Удаление доски из состояния
+    const removeDesk = (removeId) => setDesks(desks.filter(({ id }) => removeId !== id))
+
+    return { desks, setDesks, addDesk, removeDesk }
+}
+
+const useNavState = () => {
+    const [activePanel, setActivePanel] = useState('desks')
+    const [deskName, setDeskName] = useState('')
+    const [deskId, setDeskId] = useState('')
+
+    // Переход к панели с колонками доски
+    const goToColumns = (name, id) => {
+        setActivePanel(panel.columns)
+        setDeskName(name)
+        setDeskId(id)
+    }
+
+    // Переход к панели с досками
+    const goToDesks = () => setActivePanel(panel.desks)
+
+    return { activePanel, deskName, deskId, goToDesks, goToColumns }
+}
+
+const useColumnsState = () => {
+    const [columns, setColumns] = useState([])
+
+    // Добавление колонки в состояние
+    const addColumn = (column) => setColumns([...columns, column])
+    // Удаление колонки из состояния
+    const removeColumn = (removeId) => setColumns(columns.filter(({ id }) => removeId !== id))
+
+    return { addColumn, removeColumn, columns, setColumns }
+}
+
+export const useAppState = () => {
+    const navState = useNavState()
+    const desksState = useDesksState()
+    const columnsState = useColumnsState()
+
+    return {
+        ...navState,
+        ...desksState,
+        ...columnsState
+    }
+}

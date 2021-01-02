@@ -1,0 +1,14 @@
+.Column {
+    box-sizing: border-box;
+}
+
+.Column__wrapper {
+    background-color: #fff;
+}
+
+.Column__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
