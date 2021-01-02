@@ -6,7 +6,7 @@ import { getDesks } from "../../actions"
 import Context from "../App/context"
 
 const DeskList = () => {
-    const { desks, setDesks, removeDesk } = useContext(Context)
+    const { desks, setDesks } = useContext(Context)
 
     // Получение досок из БД
     useEffect(() => {
@@ -27,7 +27,6 @@ const DeskList = () => {
                     <Desk
                         key={id}
                         id={id}
-                        onDelete={removeDesk}
                         name={name}
                     >
                         {name}
