@@ -1,42 +1,18 @@
-import React, { useState } from "react"
+import React from "react"
 import { Button, Card, Div, FormLayout, Input } from "@vkontakte/vkui"
 import { Icon16Add } from "@vkontakte/icons"
 import PropTypes from 'prop-types'
 
-import {modes, statuses} from "../App/constants"
+import { useCreateForm } from "./hooks"
 import './CreateForm.css'
 
 const CreateForm = ({ placeholder, actionTitle, onSubmit }) => {
-    // Модификация компонента
-    const [formMode, setFormMode] = useState(modes.button)
-    // Название нового элемента
-    const [formItemName, setFormItemName] = useState('')
-    // Статус поля ввода названия элемента
-    const [formStatus, setFormStatus] = useState(statuses.default)
+    const { name, status, resetForm, submitForm, setFormMode, onInputChange, isButtonMode } = useCreateForm({ onSubmit })
 
-    // Сброс формы
-    const resetForm = () => {
-        setFormStatus(statuses.default)
-        setFormMode(modes.button)
-        setFormItemName('')
-    }
-
-    // Отправка формы
-    const submitForm = () => {
-        if (formItemName.trim().length <= 3) {
-            setFormStatus(statuses.error)
-            return
-        }
-
-        // Создание нового элемента
-        onSubmit(formItemName)
-            .then(resetForm)
-    }
-
-    if (formMode === modes.button) {
+    if (isButtonMode) {
         return (
             <Card size="l">
-                <Button size="xl" mode="commerce" before={<Icon16Add />} onClick={() => { setFormMode(modes.form) }}>
+                <Button size="xl" mode="commerce" before={<Icon16Add />} onClick={setFormMode}>
                     { actionTitle }
                 </Button>
             </Card>
@@ -46,30 +22,13 @@ const CreateForm = ({ placeholder, actionTitle, onSubmit }) => {
     return (
         <Card size="l" mode="shadow">
             <FormLayout>
-                <Input
-                    autoFocus
-                    value={formItemName}
-                    onChange={e => { setFormItemName(e.target.value) }}
-                    status={formStatus}
-                    placeholder={placeholder}
-                />
+                <Input autoFocus value={name} onChange={onInputChange} status={status} placeholder={placeholder} />
 
                 <Div className="CreateForm__buttons">
-                    <Button
-                        stretched
-                        size="l"
-                        mode="commerce"
-                        before={<Icon16Add />}
-                        onClick={submitForm}
-                    >
+                    <Button stretched size="l" mode="commerce" before={<Icon16Add />} onClick={submitForm}>
                         { actionTitle }
                     </Button>
-                    <Button
-                        stretched
-                        size="l"
-                        mode="tertiary"
-                        onClick={resetForm}
-                    >
+                    <Button stretched size="l" mode="tertiary" onClick={resetForm}>
                         Отмена
                     </Button>
                 </Div>

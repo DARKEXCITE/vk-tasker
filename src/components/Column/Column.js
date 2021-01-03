@@ -1,21 +1,18 @@
-import React, { useContext, useEffect } from "react"
-import { Div, Button, Card, Header, CardGrid } from "@vkontakte/vkui"
+import React, { useContext } from "react"
+import { Div, Button, Card, Header, ActionSheet, ActionSheetItem, usePlatform, IOS } from "@vkontakte/vkui"
 import PropTypes from 'prop-types'
+import Icon20More from '@vkontakte/icons/dist/20/more'
 
 import Context from "../App/context"
-import CreateForm from "../CreateForm/CreateForm"
-import ColumnCard from "../ColumnCard/ColumnCard"
-import { createCard, deleteColumn, getCards } from "../../actions"
+import { deleteColumn } from "../../actions"
 import './Column.css'
+import Cards from "../Cards/Cards";
 
 const Column = ({ name, id }) => {
-    const { removeColumn, addCard, cards, setCards } = useContext(Context)
+    const { removeColumn, setPopout } = useContext(Context)
 
-    // Получаем карточки текущей колонки из БД
-    useEffect(() => {
-        getCards(id)
-            .then(setCards)
-    }, [])
+    // Проверка платформы пользовтеля
+    const osname = usePlatform()
 
     // Удаление колонки
     const deleteItem = () => {
@@ -24,10 +21,16 @@ const Column = ({ name, id }) => {
             .catch(console.error)
     }
 
-    // Создание новой карточки
-    const createItem = (name) => {
-        return createCard(name, id)
-            .then((doc) => addCard({id: doc.id, ...doc.data()}))
+    // Отображение опций колонки
+    const showColumnOptions = () => {
+        setPopout((
+            <ActionSheet onClose={() => setPopout(null)}>
+                <ActionSheetItem mode="destructive" autoclose onClick={deleteItem}>
+                    Удалить
+                </ActionSheetItem>
+                {osname === IOS && <ActionSheetItem autoclose mode="cancel">Отменить</ActionSheetItem>}
+            </ActionSheet>
+        ))
     }
 
     return (
@@ -36,15 +39,11 @@ const Column = ({ name, id }) => {
                 {/* Шапка колонки с заголовком и кнопкой удаления */}
                 <div className="Column__header">
                     <Header>{name}</Header>
-                    <Button mode="destructive" onClick={deleteItem}>Удалить</Button>
+                    <Button mode="tertiary" onClick={showColumnOptions}><Icon20More /></Button>
                 </div>
 
                 {/* Вывод всех карточек */}
-                <CardGrid>
-                    {cards.map(({ id, name }) => <ColumnCard key={id} id={id}>{name}</ColumnCard>)}
-
-                    <CreateForm onSubmit={createItem} placeholder="Введите название карточки" actionTitle="Создать" />
-                </CardGrid>
+                <Cards columnId={id} />
             </Card>
         </Div>
     )
