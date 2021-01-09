@@ -38,7 +38,14 @@
     "firebase": "8.1.2",
     "prop-types": "^15.7.2",
     "react": "^16.9.0",
-    "react-dom": "^16.9.0"
+    "react-dom": "^16.9.0",
+    "react-redux": "^7.2.2",
+    "react-router5": "^8.0.1",
+    "redux": "^4.0.5",
+    "redux-devtools-extension": "^2.13.8",
+    "redux-thunk": "^2.3.0",
+    "router5": "^8.0.1",
+    "router5-plugin-browser": "^8.0.1"
   },
   "browserslist": {
     "production": [

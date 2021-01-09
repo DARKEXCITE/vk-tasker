@@ -1,8 +1,3 @@
-export const panel = {
-    desks: 'desks',
-    columns: 'columns'
-}
-
 // Модификации формы
 export const modes = {
     button: 'button',

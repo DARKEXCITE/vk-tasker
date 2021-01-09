@@ -1,17 +1,20 @@
-import React, { useContext, useEffect } from "react"
+import React, { useEffect } from "react"
 import { CardGrid } from "@vkontakte/vkui"
+import { useDispatch, useSelector } from "react-redux"
 
 import Desk from "../Desk/Desk"
 import { getDesks } from "../../actions"
-import Context from "../App/context"
+import { setDesks } from "../../redux/actions"
 
 const DeskList = () => {
-    const { desks, setDesks } = useContext(Context)
+    const dispatch = useDispatch()
+
+    const { desks } = useSelector(s => s.desks)
 
     // Получение досок из БД
     useEffect(() => {
-        getDesks(desks)
-            .then(setDesks)
+        getDesks()
+            .then((desks) => dispatch(setDesks(desks)))
     }, [])
 
     // Если досок нет, то ничего не отображаем
@@ -22,17 +25,7 @@ const DeskList = () => {
     return (
         // Рендер всех досок
         <CardGrid>
-            {desks.map(({ id, name }) => {
-                return (
-                    <Desk
-                        key={id}
-                        id={id}
-                        name={name}
-                    >
-                        {name}
-                    </Desk>
-                )
-            })}
+            {desks.map(({ id, name }) => <Desk key={id} id={id}>{name}</Desk>)}
         </CardGrid>
     )
 }

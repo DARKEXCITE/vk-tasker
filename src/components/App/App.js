@@ -1,33 +1,42 @@
-import React  from 'react'
+import React, { useEffect }  from 'react'
 import { Panel, View } from '@vkontakte/vkui'
-import '@vkontakte/vkui/dist/vkui.css'
+import { useRoute } from 'react-router5'
+import { useSelector, useDispatch } from "react-redux"
 
 import Desks from "../../panels/Desks/Desks"
 import Columns from "../../panels/Columns/Columns"
-import Context from "./context"
-import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
-import { panel } from "./constants"
-import { useAppState } from "./hooks"
+import { pages } from "../../config/router"
+import { changeRoute } from '../../redux/actions'
 import "../../panels/Columns/Columns.css"
 
 const App = () => {
-	const state = useAppState()
+    const dispatch = useDispatch()
 
-	return (
-		<ErrorBoundary>
-			<Context.Provider value={state}>
-				<View activePanel={state.activePanel} header={false} popout={state.popout}>
-					<Panel id={panel.desks} separator={false}>
-						<Desks />
-					</Panel>
+    const { activePanel } = useSelector(s => s.activePanel)
+    const { popout } = useSelector(s => s.popout)
+    const { route, router } = useRoute()
 
-					<Panel id={panel.columns} separator={false} className="Columns">
-						<Columns />
-					</Panel>
-				</View>
-			</Context.Provider>
-		</ErrorBoundary>
-	)
+    useEffect(() => {
+        router.subscribe((...args) => dispatch(changeRoute(...args)))
+
+        dispatch(changeRoute({ route }))
+    }, [dispatch])
+
+    if (!activePanel) {
+        return null
+    }
+
+    return (
+        <View activePanel={activePanel} header={false} popout={popout}>
+            <Panel id={pages.DESKS} separator={false}>
+                <Desks />
+            </Panel>
+
+            <Panel id={pages.COLUMNS} separator={false} className="Columns">
+                <Columns />
+            </Panel>
+        </View>
+    )
 }
 
 export default App;

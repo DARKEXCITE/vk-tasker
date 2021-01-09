@@ -1,15 +1,16 @@
-import React, { useContext } from "react"
+import React from "react"
 import { Div, Button, Card, Header, ActionSheet, ActionSheetItem, usePlatform, IOS } from "@vkontakte/vkui"
+import { useDispatch } from "react-redux"
 import PropTypes from 'prop-types'
 import Icon20More from '@vkontakte/icons/dist/20/more'
 
-import Context from "../App/context"
 import { deleteColumn } from "../../actions"
 import './Column.css'
 import Cards from "../Cards/Cards";
+import { removeColumn, setPopout } from "../../redux/actions"
 
 const Column = ({ name, id }) => {
-    const { removeColumn, setPopout } = useContext(Context)
+    const dispatch = useDispatch()
 
     // Проверка платформы пользовтеля
     const osname = usePlatform()
@@ -17,20 +18,20 @@ const Column = ({ name, id }) => {
     // Удаление колонки
     const deleteItem = () => {
         deleteColumn(id)
-            .then(() => removeColumn(id))
+            .then(() => dispatch(removeColumn(id)))
             .catch(console.error)
     }
 
     // Отображение опций колонки
     const showColumnOptions = () => {
-        setPopout((
-            <ActionSheet onClose={() => setPopout(null)}>
+        dispatch(setPopout((
+            <ActionSheet onClose={() => dispatch(setPopout(null))}>
                 <ActionSheetItem mode="destructive" autoclose onClick={deleteItem}>
                     Удалить
                 </ActionSheetItem>
                 {osname === IOS && <ActionSheetItem autoclose mode="cancel">Отменить</ActionSheetItem>}
             </ActionSheet>
-        ))
+        )))
     }
 
     return (

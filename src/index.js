@@ -4,8 +4,9 @@ import React from "react"
 import ReactDOM from "react-dom"
 // import bridge from "@vkontakte/vk-bridge"
 
-import App from "./components/App/App"
+import AppContainer from "./components/App/AppContainer"
 import { initializeFirebase } from "./actions"
+import { initializeRouter } from './config/router'
 
 // Init VK Mini App
 // bridge.send("VKWebAppInit")
@@ -13,4 +14,7 @@ import { initializeFirebase } from "./actions"
 // Init Firebase
 initializeFirebase()
 
-ReactDOM.render(<App />, document.getElementById("root"))
+// Init Router
+const route = initializeRouter()
+
+ReactDOM.render(<AppContainer router={route} />, document.getElementById("root"))
