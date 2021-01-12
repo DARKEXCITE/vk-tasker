@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import Icon20More from '@vkontakte/icons/dist/20/more'
 
 import Cards from "../../../cards/components/Cards/Cards"
-import { setPopout } from "../../../../redux/actions"
+import { setPopout } from "../../../../app/actions"
 import { deleteColumn } from "../../reducer"
 import './Column.css'
 

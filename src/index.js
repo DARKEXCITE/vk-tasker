@@ -4,8 +4,8 @@ import React from "react"
 import ReactDOM from "react-dom"
 // import bridge from "@vkontakte/vk-bridge"
 
-import AppContainer from "./components/App/AppContainer"
-import { initializeFirebase } from "./firebase"
+import AppContainer from "./app/components/App/AppContainer"
+import { initializeFirebase } from "./app/firebase"
 import { initializeRouter } from './config/router'
 
 // Init VK Mini App

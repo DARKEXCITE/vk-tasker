@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from "react-redux"
 
 import Column from "../../components/Column/Column"
 import CreateForm from "../../../../components/CreateForm/CreateForm"
-import { setActivePanel } from "../../../../redux/actions"
+import { setActivePanel } from "../../../../app/actions"
 import { pages } from "../../../../config/router"
 import { getColumns } from "../../selectors"
 import { getDesks } from "../../../desks/selectors"

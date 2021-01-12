@@ -1,6 +1,16 @@
 import { useState } from 'react'
 
-import { modes, statuses } from "../App/constants"
+// Модификации формы
+export const modes = {
+    button: 'button',
+    form: 'form'
+}
+
+// Статус поля ввода
+export const statuses = {
+    default: 'default',
+    error: 'error'
+}
 
 export const useCreateForm = ({ onSubmit }) => {
     // Модификация компонента

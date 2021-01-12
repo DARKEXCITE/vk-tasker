@@ -13,7 +13,7 @@ const Desks = () => {
     return (
         <Fragment>
             {/* Заголовок */}
-            <PanelHeaderSimple>Мои доски</PanelHeaderSimple>
+            <PanelHeaderSimple>TASKER</PanelHeaderSimple>
 
             {/* Компонент создания досок */}
             <Div>

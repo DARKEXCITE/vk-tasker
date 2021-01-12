@@ -15,7 +15,6 @@ export const initializeRouter = () => {
     const router = createRouter(routes, { defaultRoute: pages.DESKS })
 
     router.usePlugin(browserPlugin())
-
     router.start()
 
     return router

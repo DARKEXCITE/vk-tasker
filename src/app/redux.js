@@ -1,8 +1,19 @@
-import { createStore, applyMiddleware, compose } from 'redux'
+import { createStore, applyMiddleware, compose, combineReducers } from 'redux'
 import thunk from 'redux-thunk'
 import { composeWithDevTools } from 'redux-devtools-extension'
 
-import rootReducer from './reducers'
+import app from './reducer'
+import cards from '../features/cards/reducer'
+import columns from '../features/columns/reducer'
+import desks from '../features/desks/reducer'
+
+const rootReducer = () =>
+    combineReducers({
+        app,
+        cards,
+        columns,
+        desks,
+    })
 
 const middleware = (store) => (next) => (action) => {
     return next(action)

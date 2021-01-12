@@ -1,4 +1,4 @@
-import * as actionType from '../types'
+import * as actionType from './types'
 
 const initialState = {
     activePanel: null,
