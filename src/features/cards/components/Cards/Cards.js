@@ -4,9 +4,9 @@ import { useDispatch, useSelector } from "react-redux"
 import PropTypes from 'prop-types'
 
 import ColumnCard from "../ColumnCard/ColumnCard"
-import CreateForm from "../CreateForm/CreateForm"
-import { getCards } from "../../selectors/selectors"
-import { createCard, fetchCards } from "../../redux/reducers/cards"
+import CreateForm from "../../../../components/CreateForm/CreateForm"
+import { getCards } from "../../selectors"
+import { createCard, fetchCards } from "../../reducer"
 import './Cards.css'
 
 const Cards = ({ columnId }) => {

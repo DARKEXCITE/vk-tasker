@@ -1,7 +1,8 @@
 import * as actionType from '../types'
 
 const initialState = {
-    activePanel: null
+    activePanel: null,
+    popout: null
 }
 
 export default (state = initialState, action) => {
@@ -11,6 +12,14 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 activePanel: action.panel
+            }
+        }
+
+        // Показать всплывающее окно
+        case actionType.SET_POPOUT: {
+            return {
+                ...state,
+                popout: action.popout
             }
         }
 

@@ -3,12 +3,12 @@ import { Panel, View } from '@vkontakte/vkui'
 import { useRoute } from 'react-router5'
 import { useSelector, useDispatch } from "react-redux"
 
-import Desks from "../../panels/Desks/Desks"
-import Columns from "../../panels/Columns/Columns"
+import Desks from "../../features/desks/panels/Desks/Desks"
+import Columns from "../../features/columns/panels/Columns/Columns"
 import { pages } from "../../config/router"
 import { changeRoute } from '../../redux/actions'
 import { getActivePanel, getPopout } from "../../selectors/selectors"
-import "../../panels/Columns/Columns.css"
+import "../../features/columns/panels/Columns/Columns.css"
 
 const App = () => {
     const dispatch = useDispatch()

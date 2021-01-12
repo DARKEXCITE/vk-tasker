@@ -1,20 +1,20 @@
-import * as actionType from '../types'
 import firebase from "firebase"
-import { addColumn, removeColumn, setColumns } from "../actions"
+import * as actionType from './types'
+import { addColumn, removeColumn, setColumns } from "./actions"
 
 const initialState = {
-    columns: []
+    list: []
 }
 
 export default (state = initialState, action) => {
     switch (action.type) {
         // Добавить колонку
         case actionType.ADD_COLUMN: {
-            const columns = [...state.columns, action.column]
+            const list = [...state.list, action.column]
 
             return {
                 ...state,
-                columns
+                list
             }
         }
 
@@ -22,17 +22,17 @@ export default (state = initialState, action) => {
         case actionType.SET_COLUMNS: {
             return {
                 ...state,
-                columns: action.columns
+                list: action.columns
             }
         }
 
         // Удалить колонку
         case actionType.REMOVE_COLUMN: {
-            const columns = state.columns.filter(({ id }) => action.removeID !== id)
+            const list = state.list.filter(({ id }) => action.removeID !== id)
 
             return {
                 ...state,
-                columns
+                list
             }
         }
 
@@ -45,7 +45,7 @@ export const createColumn = (name, deskId) => {
     return (dispatch) => {
         const db = firebase.firestore()
 
-        return db.collection("columns")
+        return db.collection("list")
             .add({ name, deskId })
             .then((docRef) => docRef.get())
             .then((doc) => dispatch(addColumn({ id: doc.id, ...doc.data() })))
@@ -58,24 +58,24 @@ export const fetchColumns = (deskId) => {
     return (dispatch) => {
         const db = firebase.firestore()
 
-        return db.collection("columns")
+        return db.collection("list")
             .where("deskId", "==", deskId)
             .get()
             .then((querySnapshot) => {
-                const columns = []
+                const list = []
 
                 querySnapshot.forEach((doc) => {
                     const { deskId, name } = doc.data()
-                    columns.push({
+                    list.push({
                         id: doc.id,
                         deskId,
                         name
                     })
                 })
 
-                return columns
+                return list
             })
-            .then((columns) => dispatch(setColumns(columns)))
+            .then((list) => dispatch(setColumns(list)))
     }
 }
 
@@ -84,7 +84,7 @@ export const deleteColumn = (id) => {
     return (dispatch) => {
         const db = firebase.firestore()
 
-        return db.collection("columns")
+        return db.collection("list")
             .doc(id)
             .delete()
             .then(() => dispatch(removeColumn(id)))

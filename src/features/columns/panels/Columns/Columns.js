@@ -4,11 +4,12 @@ import { useRoute } from 'react-router5'
 import { useSelector, useDispatch } from "react-redux"
 
 import Column from "../../components/Column/Column"
-import CreateForm from "../../components/CreateForm/CreateForm"
-import { setActivePanel } from "../../redux/actions"
-import { pages } from "../../config/router"
-import { getColumns, getDesks } from "../../selectors/selectors"
-import { createColumn, fetchColumns } from "../../redux/reducers/columns"
+import CreateForm from "../../../../components/CreateForm/CreateForm"
+import { setActivePanel } from "../../../../redux/actions"
+import { pages } from "../../../../config/router"
+import { getColumns } from "../../selectors"
+import { getDesks } from "../../../desks/selectors"
+import { createColumn, fetchColumns } from "../../reducer"
 import '../../components/Column/Column.css'
 import "./Columns.css"
 
@@ -39,7 +40,7 @@ const Columns = () => {
 
             {/* Компонент галереи колонок */}
             <Gallery slideWidth="90%" align="left" className="Columns__list">
-                {columns.map(({ id, name }) => <Column key={id} name={name} id={id} />)}
+                {columns && columns.map(({ id, name }) => <Column key={id} name={name} id={id} />)}
 
                 <Div className="Column">
                     <Card className="Column__wrapper">

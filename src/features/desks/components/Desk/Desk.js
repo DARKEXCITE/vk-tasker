@@ -4,8 +4,8 @@ import { useRouter } from 'react-router5'
 import { useDispatch } from "react-redux"
 import { Card, Div, Button } from "@vkontakte/vkui"
 
-import { deleteDesk } from "../../redux/reducers/desks"
-import { pages } from "../../config/router"
+import { deleteDesk } from "../../reducer"
+import { pages } from "../../../../config/router"
 import './Desk.css'
 
 const Desk = ({ id, children }) => {

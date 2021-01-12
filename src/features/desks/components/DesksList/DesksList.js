@@ -3,8 +3,8 @@ import { CardGrid } from "@vkontakte/vkui"
 import { useDispatch, useSelector } from "react-redux"
 
 import Desk from "../Desk/Desk"
-import { fetchDesks } from "../../redux/reducers/desks"
-import { getDesks } from "../../selectors/selectors"
+import { fetchDesks } from "../../reducer"
+import { getDesks } from "../../selectors"
 
 const DeskList = () => {
     const dispatch = useDispatch()

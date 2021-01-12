@@ -1,20 +1,20 @@
-import * as actionType from '../types'
 import firebase from "firebase"
-import { addCard, removeCard, setCards } from "../actions"
+import * as actionType from './types'
+import { addCard, removeCard, setCards } from "./actions"
 
 const initialState = {
-    cards: []
+    list: []
 }
 
 export default (state = initialState, action) => {
     switch (action.type) {
         // Добавить карточку
         case actionType.ADD_CARD: {
-            const cards = [...state.cards, action.card]
+            const cards = [...state.list, action.card]
 
             return {
                 ...state,
-                cards
+                list: cards
             }
         }
 
@@ -22,17 +22,17 @@ export default (state = initialState, action) => {
         case actionType.SET_CARDS: {
             return {
                 ...state,
-                cards: action.cards
+                list: action.cards
             }
         }
 
         // Удалить карточку
         case actionType.REMOVE_CARD: {
-            const cards = state.cards.filter(({ id }) => action.removeID !== id)
+            const cards = state.list.filter(({ id }) => action.removeID !== id)
 
             return {
                 ...state,
-                cards
+                list: cards
             }
         }
 

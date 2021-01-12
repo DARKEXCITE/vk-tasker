@@ -4,9 +4,9 @@ import { Div, Button, Card, Header, usePlatform, ActionSheet, ActionSheetItem, I
 import PropTypes from 'prop-types'
 import Icon20More from '@vkontakte/icons/dist/20/more'
 
-import Cards from "../Cards/Cards"
-import { setPopout } from "../../redux/actions"
-import { deleteColumn } from "../../redux/reducers/columns"
+import Cards from "../../../cards/components/Cards/Cards"
+import { setPopout } from "../../../../redux/actions"
+import { deleteColumn } from "../../reducer"
 import './Column.css'
 
 const Column = ({ name, id }) => {

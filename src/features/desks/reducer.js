@@ -1,20 +1,20 @@
-import * as actionType from '../types'
 import firebase from "firebase"
-import { addDesk, removeDesk, setDesks } from "../actions"
+import * as actionType from './types'
+import { addDesk, removeDesk, setDesks } from "./actions"
 
 const initialState = {
-    desks: []
+    list: []
 }
 
 export default (state = initialState, action) => {
     switch (action.type) {
         // Добавить доску
         case actionType.ADD_DESK: {
-            const desks = [...state.desks, action.desk]
+            const list = [...state.list, action.desk]
 
             return {
                 ...state,
-                desks
+                list
             }
         }
 
@@ -22,17 +22,17 @@ export default (state = initialState, action) => {
         case actionType.SET_DESKS: {
             return {
                 ...state,
-                desks: action.desks
+                list: action.desks
             }
         }
 
         // Удалить доску
         case actionType.REMOVE_DESK: {
-            const desks = state.desks.filter(({ id }) => action.removeID !== id)
+            const desks = state.list.filter(({ id }) => action.removeID !== id)
 
             return {
                 ...state,
-                desks
+                list: desks
             }
         }
 

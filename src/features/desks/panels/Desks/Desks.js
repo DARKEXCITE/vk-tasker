@@ -3,8 +3,8 @@ import { PanelHeaderSimple, Div } from "@vkontakte/vkui"
 import { useDispatch } from "react-redux"
 
 import DesksList from "../../components/DesksList/DesksList"
-import CreateForm from "../../components/CreateForm/CreateForm"
-import { createDesk } from "../../redux/reducers/desks"
+import CreateForm from "../../../../components/CreateForm/CreateForm"
+import { createDesk } from "../../reducer"
 
 
 const Desks = () => {

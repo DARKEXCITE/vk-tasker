@@ -3,7 +3,7 @@ import PropTypes from "prop-types"
 import { useDispatch } from "react-redux"
 import { Card, Div } from "@vkontakte/vkui"
 
-import { deleteCard } from "../../redux/reducers/cards"
+import { deleteCard } from "../../reducer"
 import './ColumnCard.css'
 
 const ColumnCard = ({ children, id }) => {

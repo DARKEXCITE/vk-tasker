@@ -1,18 +1,16 @@
 import { combineReducers } from 'redux'
 
-import cards from './cards'
-import columns from './columns'
-import desks from './desks'
-import popout from './popout'
-import activePanel from './activePanel'
+import app from './app'
+import cards from '../../features/cards/reducer'
+import columns from '../../features/columns/reducer'
+import desks from '../../features/desks/reducer'
 
 const createRootReducer = () =>
     combineReducers({
+        app,
         cards,
         columns,
         desks,
-        popout,
-        activePanel
     })
 
 export default createRootReducer
