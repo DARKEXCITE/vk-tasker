@@ -1,22 +1,14 @@
 import React, { Fragment } from "react"
-import { useDispatch } from "react-redux"
 import { PanelHeaderSimple, Div } from "@vkontakte/vkui"
+import { useDispatch } from "react-redux"
 
 import DesksList from "../../components/DesksList/DesksList"
 import CreateForm from "../../components/CreateForm/CreateForm"
-import { createDesk } from "../../actions"
-import { addDesk } from "../../redux/actions"
+import { createDesk } from "../../redux/reducers/desks"
 
 
 const Desks = () => {
     const dispatch = useDispatch()
-
-    // Создание новой доски
-    const createItem = (name) => {
-        return createDesk(name)
-            .then((doc) => dispatch(addDesk({ id: doc.id, ...doc.data() })))
-            .catch(console.error)
-    }
 
     return (
         <Fragment>
@@ -25,7 +17,7 @@ const Desks = () => {
 
             {/* Компонент создания досок */}
             <Div>
-                <CreateForm onSubmit={createItem} placeholder="Введите название доски" actionTitle="Создать доску" />
+                <CreateForm onSubmit={(name) => dispatch(createDesk(name))} placeholder="Введите название доски" actionTitle="Создать доску" />
             </Div>
 
             {/* Список всех досок */}

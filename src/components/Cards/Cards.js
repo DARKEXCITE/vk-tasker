@@ -5,26 +5,18 @@ import PropTypes from 'prop-types'
 
 import ColumnCard from "../ColumnCard/ColumnCard"
 import CreateForm from "../CreateForm/CreateForm"
-import { createCard, getCards } from "../../actions"
-import { addCard, setCards } from "../../redux/actions"
+import { getCards } from "../../selectors/selectors"
+import { createCard, fetchCards } from "../../redux/reducers/cards"
 import './Cards.css'
 
 const Cards = ({ columnId }) => {
     const dispatch = useDispatch()
-
-    const { cards } = useSelector(s => s.cards)
+    const cards = useSelector(getCards)
 
     // Получаем карточки текущей колонки из БД
     useEffect(() => {
-        getCards(columnId)
-            .then((cards) => dispatch(setCards(cards)))
+        dispatch(fetchCards(columnId))
     }, [dispatch, columnId])
-
-    // Создание новой карточки
-    const createItem = (name) => {
-        return createCard(name, columnId)
-            .then((doc) => dispatch(addCard({id: doc.id, ...doc.data()})))
-    }
 
     return (
         <Fragment>
@@ -34,7 +26,11 @@ const Cards = ({ columnId }) => {
 
             {/* Форма добавления новой карточки */}
             <Div className="Card__create-button">
-                <CreateForm onSubmit={createItem} placeholder="Введите название карточки" actionTitle="Добавить" />
+                <CreateForm
+                    onSubmit={(name) => dispatch(createCard(name, columnId))}
+                    placeholder="Введите название карточки"
+                    actionTitle="Добавить"
+                />
             </Div>
         </Fragment>
     )

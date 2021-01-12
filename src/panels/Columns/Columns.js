@@ -5,35 +5,26 @@ import { useSelector, useDispatch } from "react-redux"
 
 import Column from "../../components/Column/Column"
 import CreateForm from "../../components/CreateForm/CreateForm"
-import { createColumn, getColumns } from "../../actions"
-import { addColumn, setActivePanel, setColumns } from "../../redux/actions"
+import { setActivePanel } from "../../redux/actions"
 import { pages } from "../../config/router"
+import { getColumns, getDesks } from "../../selectors/selectors"
+import { createColumn, fetchColumns } from "../../redux/reducers/columns"
 import '../../components/Column/Column.css'
 import "./Columns.css"
 
 const Columns = () => {
     const dispatch = useDispatch()
 
-    const { columns } = useSelector(s => s.columns)
-    const { desks } = useSelector(s => s.desks)
+    const columns = useSelector(getColumns)
+    const desks = useSelector(getDesks)
 
     const { route: { params: { deskId } } } = useRoute()
     const desk = desks.find(({ id }) => id === deskId) || {}
 
     // Получаем все колонки из БД
     useEffect(() => {
-        if (desk.id) {
-            getColumns(desk.id)
-                .then((columns) => dispatch(setColumns(columns)))
-        }
-    }, [desk])
-
-    // Создание новой колонки
-    const createItem = (name) => {
-        return createColumn(name, deskId)
-            .then((doc) => dispatch(addColumn({ id: doc.id, ...doc.data() })))
-            .catch(console.error)
-    }
+        if (desk.id) dispatch(fetchColumns(desk.id))
+    }, [desk, dispatch])
 
     // Переход к панели с досками
     const goToDesks = () => {
@@ -52,7 +43,11 @@ const Columns = () => {
 
                 <Div className="Column">
                     <Card className="Column__wrapper">
-                        <CreateForm onSubmit={createItem} placeholder="Введите название колонки" actionTitle="Создать" />
+                        <CreateForm
+                            onSubmit={(name) => dispatch(createColumn(name, deskId))}
+                            placeholder="Введите название колонки"
+                            actionTitle="Создать"
+                        />
                     </Card>
                 </Div>
             </Gallery>

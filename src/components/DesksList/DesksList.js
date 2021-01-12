@@ -3,18 +3,16 @@ import { CardGrid } from "@vkontakte/vkui"
 import { useDispatch, useSelector } from "react-redux"
 
 import Desk from "../Desk/Desk"
-import { getDesks } from "../../actions"
-import { setDesks } from "../../redux/actions"
+import { fetchDesks } from "../../redux/reducers/desks"
+import { getDesks } from "../../selectors/selectors"
 
 const DeskList = () => {
     const dispatch = useDispatch()
-
-    const { desks } = useSelector(s => s.desks)
+    const desks = useSelector(getDesks)
 
     // Получение досок из БД
     useEffect(() => {
-        getDesks()
-            .then((desks) => dispatch(setDesks(desks)))
+        dispatch(fetchDesks())
     }, [])
 
     // Если досок нет, то ничего не отображаем

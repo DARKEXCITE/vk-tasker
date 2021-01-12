@@ -7,18 +7,18 @@ import Desks from "../../panels/Desks/Desks"
 import Columns from "../../panels/Columns/Columns"
 import { pages } from "../../config/router"
 import { changeRoute } from '../../redux/actions'
+import { getActivePanel, getPopout } from "../../selectors/selectors"
 import "../../panels/Columns/Columns.css"
 
 const App = () => {
     const dispatch = useDispatch()
 
-    const { activePanel } = useSelector(s => s.activePanel)
-    const { popout } = useSelector(s => s.popout)
+    const activePanel = useSelector(getActivePanel)
+    const popout = useSelector(getPopout)
     const { route, router } = useRoute()
 
     useEffect(() => {
         router.subscribe((...args) => dispatch(changeRoute(...args)))
-
         dispatch(changeRoute({ route }))
     }, [dispatch])
 

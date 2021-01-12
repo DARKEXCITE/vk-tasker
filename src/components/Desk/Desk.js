@@ -1,33 +1,31 @@
 import React from "react"
 import PropTypes from 'prop-types'
 import { useRouter } from 'react-router5'
-import { Card, Div, Button } from "@vkontakte/vkui"
 import { useDispatch } from "react-redux"
+import { Card, Div, Button } from "@vkontakte/vkui"
 
-import './Desk.css'
-import { deleteDesk } from "../../actions"
+import { deleteDesk } from "../../redux/reducers/desks"
 import { pages } from "../../config/router"
-import { removeDesk } from "../../redux/actions"
+import './Desk.css'
 
 const Desk = ({ id, children }) => {
     const dispatch = useDispatch()
     const router = useRouter()
     const goToColumnPanel = () => router.navigate(pages.COLUMNS, { deskId: id })
 
-    // Удаление доски
-    const deleteItem = (e) => {
-        e.stopPropagation()
-
-        deleteDesk(id)
-            .then(() => dispatch(removeDesk(id)))
-            .catch(console.error)
-    }
-
     return (
         <Card size="l" onClick={goToColumnPanel}>
             <Div className="Desk__content">
                 { children }
-                <Button mode="destructive" onClick={deleteItem}>Удалить</Button>
+                <Button
+                    mode="destructive"
+                    onClick={(e) => {
+                        e.stopPropagation()
+                        dispatch(deleteDesk(id))
+                    }}
+                >
+                    Удалить
+                </Button>
             </Div>
         </Card>
     )
