@@ -2,17 +2,23 @@ import React  from "react"
 import PropTypes from "prop-types"
 import { useDispatch } from "react-redux"
 import { Card, Div } from "@vkontakte/vkui"
+import { useRouter } from "react-router5"
 
 import { deleteCard } from "../../reducer"
-import './ColumnCard.css'
+import { pages } from "../../../../config/router"
+import "./ColumnCard.css"
 
 const ColumnCard = ({ children, id }) => {
     const dispatch = useDispatch()
+    const router = useRouter()
+
+    const goToCardPage = () => router.navigate(pages.CARD, { cardId: id })
+    // const deleteItem = () => dispatch(deleteCard(id))
 
     return (
-        <Card size="l">
+        <Card size="l" onClick={goToCardPage}>
             <Div className="ColumnCard__wrapper">
-                <div onClick={() => dispatch(deleteCard(id))}>{children}</div>
+                <div>{children}</div>
             </Div>
         </Card>
     )

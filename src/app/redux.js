@@ -6,6 +6,7 @@ import app from './reducer'
 import cards from '../features/cards/reducer'
 import columns from '../features/columns/reducer'
 import desks from '../features/desks/reducer'
+import card from '../features/card/reducer'
 
 const rootReducer = () =>
     combineReducers({
@@ -13,6 +14,7 @@ const rootReducer = () =>
         cards,
         columns,
         desks,
+        card
     })
 
 const middleware = (store) => (next) => (action) => {

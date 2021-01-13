@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from "react-redux"
 
 import Desks from "../../../features/desks/panels/Desks/Desks"
 import Columns from "../../../features/columns/panels/Columns/Columns"
+import Card from "../../../features/card/panels/Card/Card"
 import { pages } from "../../../config/router"
 import { changeRoute } from '../../actions'
 import { getActivePanel, getPopout } from "../../selectors"
@@ -20,7 +21,7 @@ const App = () => {
     useEffect(() => {
         router.subscribe((...args) => dispatch(changeRoute(...args)))
         dispatch(changeRoute({ route }))
-    }, [dispatch])
+    }, [dispatch, route, router])
 
     if (!activePanel) {
         return null
@@ -34,6 +35,10 @@ const App = () => {
 
             <Panel id={pages.COLUMNS} separator={false} className="Columns">
                 <Columns />
+            </Panel>
+
+            <Panel id={pages.CARD} separator={false}>
+                <Card />
             </Panel>
         </View>
     )

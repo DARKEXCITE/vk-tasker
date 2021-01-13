@@ -13,7 +13,7 @@ const DeskList = () => {
     // Получение досок из БД
     useEffect(() => {
         dispatch(fetchDesks())
-    }, [])
+    }, [dispatch])
 
     // Если досок нет, то ничего не отображаем
     if (!desks.length) {
