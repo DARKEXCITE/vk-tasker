@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useCallback, memo } from "react"
 import PropTypes from 'prop-types'
 import { useRouter } from 'react-router5'
 import { useDispatch } from "react-redux"
@@ -11,19 +11,19 @@ import './Desk.css'
 const Desk = ({ id, children }) => {
     const dispatch = useDispatch()
     const router = useRouter()
-    const goToColumnPanel = () => router.navigate(pages.COLUMNS, { deskId: id })
+
+    const goToColumnPanel = useCallback(() => router.navigate(pages.COLUMNS, { deskId: id }), [router, id])
+
+    const deleteItem = useCallback((e) => {
+        e.stopPropagation()
+        dispatch(deleteDesk(id))
+    }, [dispatch, id])
 
     return (
         <Card size="l" onClick={goToColumnPanel}>
             <Div className="Desk__content">
                 { children }
-                <Button
-                    mode="destructive"
-                    onClick={(e) => {
-                        e.stopPropagation()
-                        dispatch(deleteDesk(id))
-                    }}
-                >
+                <Button mode="destructive" onClick={deleteItem}>
                     Удалить
                 </Button>
             </Div>
@@ -36,4 +36,4 @@ Desk.propTypes = {
     children: PropTypes.oneOfType([PropTypes.node, PropTypes.arrayOf(PropTypes.node)]).isRequired
 }
 
-export default Desk
+export default memo(Desk)

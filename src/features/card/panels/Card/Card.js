@@ -1,11 +1,11 @@
-import React, { Fragment, useEffect, useState } from "react"
+import React, { Fragment, useEffect, useState, useCallback, memo } from "react"
 import { PanelHeaderBack, PanelHeaderSimple, PanelSpinner } from "@vkontakte/vkui"
 import { useDispatch, useSelector } from "react-redux"
 import { useRoute } from "react-router5"
 
 import { fetchCard } from "../../reducer"
 import { getName } from "../../selectors"
-import {setActivePanel} from "../../../../app/actions"
+import { setActivePanel } from "../../../../app/actions"
 import { pages } from "../../../../config/router"
 import CardContent from "../../components/CardContent/CardContent"
 
@@ -23,13 +23,13 @@ const Card = () => {
             dispatch(fetchCard(cardId))
                 .finally(() => setLoader(false))
         }
-    }, [cardId])
+    }, [cardId, dispatch])
 
     // Переход к панели с досками
-    const goToColumns = () => {
+    const goToColumns = useCallback(() => {
         window.history.back()
         return dispatch(setActivePanel(pages.COLUMNS))
-    }
+    }, [dispatch])
 
     return (
         <Fragment>
@@ -44,4 +44,4 @@ const Card = () => {
     )
 }
 
-export default Card
+export default memo(Card)

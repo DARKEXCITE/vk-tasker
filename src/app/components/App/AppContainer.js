@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo } from 'react'
 import { RouterProvider } from 'react-router5'
 import { Provider } from 'react-redux'
 import '@vkontakte/vkui/dist/vkui.css'
@@ -19,4 +19,4 @@ const AppContainer = ({ router }) => {
     )
 }
 
-export default AppContainer;
+export default memo(AppContainer)

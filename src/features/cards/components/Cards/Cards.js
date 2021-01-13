@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from 'react'
+import React, { Fragment, useEffect, useCallback, memo } from 'react'
 import { CardGrid, Div } from "@vkontakte/vkui"
 import { useDispatch, useSelector } from "react-redux"
 import PropTypes from 'prop-types'
@@ -18,19 +18,19 @@ const Cards = ({ columnId }) => {
         dispatch(fetchCards(columnId))
     }, [dispatch, columnId])
 
+    // Создание карточки
+    const createItem = useCallback((name) => dispatch(createCard(name, columnId)), [dispatch, columnId])
+
     return (
         <Fragment>
+            {/* Вывод всех карточек в колонке */}
             <CardGrid>
                 {cards.map(({ id, name }) => <ColumnCard key={id} id={id}>{name}</ColumnCard>)}
             </CardGrid>
 
             {/* Форма добавления новой карточки */}
             <Div className="Card__create-button">
-                <CreateForm
-                    onSubmit={(name) => dispatch(createCard(name, columnId))}
-                    placeholder="Введите название карточки"
-                    actionTitle="Добавить"
-                />
+                <CreateForm onSubmit={createItem} placeholder="Введите название карточки" actionTitle="Добавить" />
             </Div>
         </Fragment>
     )
@@ -40,4 +40,4 @@ Cards.propTypes = {
     columnId: PropTypes.string.isRequired
 }
 
-export default Cards
+export default memo(Cards)

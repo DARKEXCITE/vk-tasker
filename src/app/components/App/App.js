@@ -1,4 +1,4 @@
-import React, { useEffect }  from 'react'
+import React, { useEffect, memo }  from 'react'
 import { Panel, View } from '@vkontakte/vkui'
 import { useRoute } from 'react-router5'
 import { useSelector, useDispatch } from "react-redux"
@@ -44,4 +44,4 @@ const App = () => {
     )
 }
 
-export default App;
+export default memo(App);

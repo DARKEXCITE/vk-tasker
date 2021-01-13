@@ -1,4 +1,4 @@
-import React, { Fragment } from "react"
+import React, { Fragment, useCallback, memo } from "react"
 import { PanelHeaderSimple, Div } from "@vkontakte/vkui"
 import { useDispatch } from "react-redux"
 
@@ -10,6 +10,8 @@ import { createDesk } from "../../reducer"
 const Desks = () => {
     const dispatch = useDispatch()
 
+    const onSubmit = useCallback((name) => dispatch(createDesk(name)), [dispatch])
+
     return (
         <Fragment>
             {/* Заголовок */}
@@ -17,7 +19,7 @@ const Desks = () => {
 
             {/* Компонент создания досок */}
             <Div>
-                <CreateForm onSubmit={(name) => dispatch(createDesk(name))} placeholder="Введите название доски" actionTitle="Создать доску" />
+                <CreateForm onSubmit={onSubmit} placeholder="Введите название доски" actionTitle="Создать доску" />
             </Div>
 
             {/* Список всех досок */}
@@ -26,4 +28,4 @@ const Desks = () => {
     )
 }
 
-export default Desks
+export default memo(Desks)

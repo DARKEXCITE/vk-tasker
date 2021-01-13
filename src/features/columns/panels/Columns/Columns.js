@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from "react"
+import React, { Fragment, useEffect, useCallback, useMemo, memo } from "react"
 import { Card, Gallery, PanelHeaderSimple, Div, PanelHeaderBack } from "@vkontakte/vkui"
 import { useRoute } from 'react-router5'
 import { useSelector, useDispatch } from "react-redux"
@@ -20,23 +20,30 @@ const Columns = () => {
     const desks = useSelector(getDesks)
 
     const { route: { params: { deskId } } } = useRoute()
-    const desk = desks.find(({ id }) => id === deskId) || {}
+    const desk = useMemo(() => desks.find(({ id }) => id === deskId) || {}, [deskId, desks])
 
     // Получаем все колонки из БД
     useEffect(() => {
-        if (desk.id) dispatch(fetchColumns(desk.id))
+        if (desk.id) {
+            dispatch(fetchColumns(desk.id))
+        }
     }, [desk, dispatch])
 
+    // Создание новой колонки
+    const onSubmit = useCallback((name) => dispatch(createColumn(name, deskId)), [dispatch, deskId])
+
     // Переход к панели с досками
-    const goToDesks = () => {
+    const goToDesks = useCallback(() => {
         window.history.back()
         return dispatch(setActivePanel(pages.DESKS))
-    }
+    }, [dispatch])
 
     return (
         <Fragment>
             {/* Заголовок доски */}
-            <PanelHeaderSimple left={<PanelHeaderBack onClick={goToDesks} />}>{desk.name ? desk.name : 'Доска'}</PanelHeaderSimple>
+            <PanelHeaderSimple left={<PanelHeaderBack onClick={goToDesks} />}>
+                {desk.name ? desk.name : 'Доска'}
+            </PanelHeaderSimple>
 
             {/* Компонент галереи колонок */}
             <Gallery slideWidth="90%" align="left" className="Columns__list">
@@ -44,11 +51,7 @@ const Columns = () => {
 
                 <Div className="Column">
                     <Card className="Column__wrapper">
-                        <CreateForm
-                            onSubmit={(name) => dispatch(createColumn(name, deskId))}
-                            placeholder="Введите название колонки"
-                            actionTitle="Создать"
-                        />
+                        <CreateForm onSubmit={onSubmit} placeholder="Введите название колонки" actionTitle="Создать" />
                     </Card>
                 </Div>
             </Gallery>
@@ -56,4 +59,4 @@ const Columns = () => {
     )
 }
 
-export default Columns
+export default memo(Columns)

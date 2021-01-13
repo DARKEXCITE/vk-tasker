@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo } from 'react'
 import { Div } from "@vkontakte/vkui"
 import { useSelector } from "react-redux"
 import ReactMarkdown from 'react-markdown'
@@ -19,4 +19,4 @@ const CardContent = () => {
     )
 }
 
-export default CardContent
+export default memo(CardContent)

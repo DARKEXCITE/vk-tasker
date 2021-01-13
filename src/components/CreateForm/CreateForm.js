@@ -1,4 +1,4 @@
-import React from "react"
+import React, { memo } from "react"
 import { Button, Card, Div, FormLayout, Input } from "@vkontakte/vkui"
 import { Icon16Add } from "@vkontakte/icons"
 import PropTypes from 'prop-types'
@@ -43,4 +43,4 @@ CreateForm.propTypes = {
     onSubmit: PropTypes.func.isRequired
 }
 
-export default CreateForm
+export default memo(CreateForm)
