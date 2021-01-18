@@ -1,10 +1,10 @@
 import firebase from "firebase"
 import * as actionType from './types'
-import { addColumn, removeColumn, setColumns } from "./actions"
+import { addColumn, changeColumn, removeColumn, setColumns } from "./actions"
 
-const initialState = {
+const initialState = Object.freeze({
     list: []
-}
+})
 
 export default (state = initialState, action) => {
     switch (action.type) {
@@ -36,6 +36,16 @@ export default (state = initialState, action) => {
             }
         }
 
+        // Редактировать колонку
+        case actionType.EDIT_COLUMN: {
+            const list = state.list.map(col => col.id !== action.id ? col : { ...col, name: action.name })
+            console.log(action)
+            return {
+                ...state,
+                list
+            }
+        }
+
         default: { return state }
     }
 }
@@ -45,7 +55,7 @@ export const createColumn = (name, deskId) => {
     return (dispatch) => {
         const db = firebase.firestore()
 
-        return db.collection("list")
+        return db.collection("columns")
             .add({ name, deskId })
             .then((docRef) => docRef.get())
             .then((doc) => dispatch(addColumn({ id: doc.id, ...doc.data() })))
@@ -58,7 +68,7 @@ export const fetchColumns = (deskId) => {
     return (dispatch) => {
         const db = firebase.firestore()
 
-        return db.collection("list")
+        return db.collection("columns")
             .where("deskId", "==", deskId)
             .get()
             .then((querySnapshot) => {
@@ -84,10 +94,26 @@ export const deleteColumn = (id) => {
     return (dispatch) => {
         const db = firebase.firestore()
 
-        return db.collection("list")
+        return db.collection("columns")
             .doc(id)
             .delete()
             .then(() => dispatch(removeColumn(id)))
             .catch(console.error)
+    }
+}
+
+// Редактирование колонки
+export const editColumn = (id, name) => {
+    return (dispatch) => {
+        const db = firebase.firestore()
+
+        return db.collection("columns")
+            .doc(id)
+            .update({ name })
+            .then(() => {
+                dispatch({ type: actionType.EDIT_COLUMN_SUCCESS })
+                dispatch(changeColumn(id, name))
+            })
+            .catch(() => dispatch({ type: actionType.EDIT_COLUMN_FAIL }))
     }
 }

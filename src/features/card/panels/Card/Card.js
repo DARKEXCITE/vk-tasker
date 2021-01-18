@@ -36,10 +36,8 @@ const Card = () => {
             {/* Заголовок */}
             <PanelHeaderSimple left={<PanelHeaderBack onClick={goToColumns} />}>{name ? `«${name}»` : ''}</PanelHeaderSimple>
 
-            {/* Спинер при загрузке карточки */}
-            {isLoading && <PanelSpinner />}
-
-            <CardContent />
+            {/* Спинер при загрузке и содержимое карточки */}
+            {isLoading ? <PanelSpinner /> : <CardContent />}
         </Fragment>
     )
 }

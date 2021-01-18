@@ -1,10 +1,10 @@
 import firebase from "firebase"
 import * as actionType from './types'
-import { addDesk, removeDesk, setDesks } from "./actions"
+import { addDesk, removeDesk, setDesks, changeDesk } from "./actions"
 
-const initialState = {
+const initialState = Object.freeze({
     list: []
-}
+})
 
 export default (state = initialState, action) => {
     switch (action.type) {
@@ -33,6 +33,16 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 list: desks
+            }
+        }
+
+        // Редактировать доску
+        case actionType.EDIT_DESK: {
+            const list = state.list.map(desk => desk.id !== action.id ? desk : { ...desk, name: action.name })
+
+            return {
+                ...state,
+                list
             }
         }
 
@@ -86,5 +96,21 @@ export const deleteDesk = (id) => {
             .delete()
             .then(() => dispatch(removeDesk(id)))
             .catch(console.error)
+    }
+}
+
+// Редактирование доски
+export const editDesk = (id, name) => {
+    return (dispatch) => {
+        const db = firebase.firestore()
+
+        return db.collection("desks")
+            .doc(id)
+            .set({ name })
+            .then(() => {
+                dispatch({ type: actionType.EDIT_DESK_SUCCESS })
+                dispatch(changeDesk(id, name))
+            })
+            .catch(() => dispatch({ type: actionType.EDIT_DESK_FAIL }))
     }
 }

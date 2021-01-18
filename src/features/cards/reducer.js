@@ -2,9 +2,9 @@ import firebase from "firebase"
 import * as actionType from './types'
 import { addCard, removeCard, setCards } from "./actions"
 
-const initialState = {
+const initialState = Object.freeze({
     list: []
-}
+})
 
 export default (state = initialState, action) => {
     switch (action.type) {

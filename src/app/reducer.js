@@ -1,9 +1,9 @@
 import * as actionType from './types'
 
-const initialState = {
+const initialState = Object.freeze({
     activePanel: null,
     popout: null
-}
+})
 
 export default (state = initialState, action) => {
     switch (action.type) {

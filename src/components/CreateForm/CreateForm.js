@@ -3,11 +3,11 @@ import { Button, Card, Div, FormLayout, Input } from "@vkontakte/vkui"
 import { Icon16Add } from "@vkontakte/icons"
 import PropTypes from 'prop-types'
 
-import { useCreateForm } from "./hooks"
+import { modes, useCreateForm } from "./hooks"
 import './CreateForm.css'
 
-const CreateForm = ({ placeholder, actionTitle, onSubmit }) => {
-    const { name, status, resetForm, submitForm, setFormMode, onInputChange, isButtonMode } = useCreateForm({ onSubmit })
+const CreateForm = ({ placeholder, actionTitle, onSubmit, initialValue, initialMode, onCancel }) => {
+    const { name, status, resetForm, submitForm, setFormMode, onInputChange, isButtonMode } = useCreateForm({ onSubmit, onCancel, initialValue, initialMode })
 
     if (isButtonMode) {
         return (
@@ -37,10 +37,19 @@ const CreateForm = ({ placeholder, actionTitle, onSubmit }) => {
     )
 }
 
+CreateForm.defaultProps = {
+    initialValue: '',
+    initialMode: modes.button,
+    onCancel: null
+}
+
 CreateForm.propTypes = {
     placeholder: PropTypes.string.isRequired,
     actionTitle: PropTypes.string.isRequired,
-    onSubmit: PropTypes.func.isRequired
+    onSubmit: PropTypes.func.isRequired,
+    onCancel: PropTypes.func,
+    initialValue: PropTypes.string,
+    initialMode: PropTypes.string
 }
 
 export default memo(CreateForm)

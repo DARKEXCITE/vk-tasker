@@ -1,13 +1,14 @@
 import firebase from "firebase"
 
 import * as actionType from "./types"
-import { setCard } from "./actions"
+import { deleteCard } from "../cards/reducer"
+import { changeCard, removeCard, setCard } from "./actions"
 
-const initialState = {
+const initialState = Object.freeze({
     id: null,
     name: null,
     text: null
-}
+})
 
 export default (state = initialState, action) => {
     switch (action.type) {
@@ -19,6 +20,17 @@ export default (state = initialState, action) => {
                 text: action.text
             }
         }
+
+        // Редактировать карточку
+        case actionType.EDIT_CARD: {
+            return {
+                ...state,
+                ...action.data
+            }
+        }
+
+        // Удалить карточку
+        case actionType.REMOVE_CARD: { return { ...initialState }}
 
         default: { return state }
     }
@@ -40,4 +52,33 @@ export const fetchCard = (cardId) => (dispatch) => {
         })
         .catch(() => dispatch({ type: actionType.FETCH_CARD_FAIL }))
 
+}
+
+// Редактирование карточки
+export const editCard = (id, data = {}) => {
+    return (dispatch) => {
+        const db = firebase.firestore()
+
+        return db.collection("cards")
+            .doc(id)
+            .update(data)
+            .then(() => {
+                dispatch({ type: actionType.EDIT_CARD_SUCCESS })
+                dispatch(changeCard(id, data))
+            })
+            .catch(() => dispatch({ type: actionType.EDIT_CARD_FAIL }))
+    }
+}
+
+// Удаление карточки
+export const deleteCardItem = () => {
+    return (dispatch, getState) => {
+        const { card: { id }} = getState()
+        return dispatch(deleteCard(id))
+            .then(() => {
+                dispatch({ type: actionType.REMOVE_CARD_SUCCESS })
+                dispatch(removeCard())
+            })
+            .catch(() => dispatch({ type: actionType.REMOVE_CARD_FAIL }))
+    }
 }

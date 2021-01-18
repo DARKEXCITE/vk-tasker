@@ -12,16 +12,17 @@ export const statuses = {
     error: 'error'
 }
 
-export const useCreateForm = ({ onSubmit }) => {
+export const useCreateForm = ({ onSubmit, onCancel, initialValue = '', initialMode = modes.button }) => {
     // Модификация компонента
-    const [mode, setMode] = useState(modes.button)
+    const [mode, setMode] = useState(initialMode)
     // Название нового элемента
-    const [name, setName] = useState('')
+    const [name, setName] = useState(initialValue)
     // Статус поля ввода названия элемента
     const [status, setStatus] = useState(statuses.default)
 
     // Сброс формы
     const resetForm = () => {
+        onCancel && onCancel()
         setMode(modes.button)
         setName('')
         setStatus(statuses.default)
